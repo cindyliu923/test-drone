@@ -11,15 +11,16 @@ steps:
   image: ruby:3.0.0
   environment:
     RAILS_ENV: test
-    POSTGRES_DB: test_drone
-    POSTGRES_PASSWORD: postgres
-    DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/$POSTGRES_DB"
-    POSTGRES_HOST_AUTH_METHOD: trust
     RAILS_MASTER_KEY:
       from_secret: rails_master_key
   services:
     - name: postgres-13-alpine
       image: postgres:13-alpine
+      environment:
+        POSTGRES_HOST_AUTH_METHOD: trust
+        POSTGRES_DB: test_drone
+        POSTGRES_PASSWORD: postgres
+        DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/$POSTGRES_DB"
   commands:
     - bundle install
     - bundle exec rake db:migrate
