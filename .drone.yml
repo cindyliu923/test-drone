@@ -13,12 +13,13 @@ steps:
     RAILS_ENV: test
     RAILS_MASTER_KEY:
       from_secret: rails_master_key
-  services:
-    - name: postgres-13-alpine
-      image: postgres:13-alpine
-      environment:
-        POSTGRES_HOST_AUTH_METHOD: trust
   commands:
     - bundle install
     - bundle exec rake db:migrate
     - bundle exec rspec
+
+services:
+  - name: postgres-13-alpine
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
