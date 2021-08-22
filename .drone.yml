@@ -1,0 +1,21 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: test
+  image: ruby:3.0.0
+  environment:
+    RAILS_ENV: test
+    POSTGRES_DB: test_drone
+    POSTGRES_PASSWORD: postgres
+    DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/$POSTGRES_DB"
+    RAILS_MASTER_KEY:
+      from_secret: rails_master_key
+  services:
+    - name: postgres-12-alpine
+      image: postgres:12-alpine
+  commands:
+    - bundle install
+    - bundle exec rake db:migrate
+    - bundle exec rspec
