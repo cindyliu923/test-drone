@@ -13,7 +13,7 @@ steps:
     RAILS_MASTER_KEY:
       from_secret: rails_master_key
   services:
-    - name: postgres-12-alpine
+    - name: postgres12-alpine
       image: postgres:12-alpine
   commands:
     - bundle install
